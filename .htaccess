@@ -1,0 +1,13 @@
+# Root domain (landing page statis)
+DirectoryIndex index.html
+Options -Indexes
+
+# Paksa HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Blok file tersembunyi (.git, .env, dsb.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

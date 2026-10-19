@@ -5,10 +5,14 @@
   "description": "Landing page statis KOL System (Vanilla + Tailwind) — hasil build deploy ke public_html",
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+    "css:watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "preview": "live-server --port=8087 --no-browser --ignore=node_modules",
+    "dev": "concurrently -n css,preview -c blue,green \"npm:css:watch\" \"npm:preview\""
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",
-    "tailwindcss": "^4.1.0"
+    "tailwindcss": "^4.1.0",
+    "concurrently": "^9.1.0",
+    "live-server": "^1.2.2"
   }
 }

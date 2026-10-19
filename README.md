@@ -22,9 +22,14 @@ landing/
 
 ```bash
 npm install        # sekali saja (butuh Node ≥ 18)
+npm run dev        # watch Tailwind + preview server di http://localhost:8087 (auto-reload)
+npm run css:watch  # watch Tailwind saja (tanpa server)
+npm run preview    # server statis saja di http://localhost:8087
 npm run build      # build production → dist/output.css (minified)
-npm run dev        # watch mode saat mengembangkan
 ```
+
+> Port preview (8087) hanya untuk lokal. Tidak ada hubungannya dengan deploy —
+> `package.json` dan `node_modules/` tidak ikut di-upload ke `public_html/`.
 
 ## Deploy → public_html
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth scroll-pt-24">
+<html lang="id" class="scroll-smooth scroll-pt-24" data-api-base="/campaigns">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +33,7 @@
         <a href="#fitur" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Fitur</a>
         <a href="#plugin" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Plugin Analitik</a>
         <a href="#how-it-works" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Cara Kerja</a>
+        <a href="artikel.html" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Artikel</a>
         <a href="#demo" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Demo</a>
       </nav>
 
@@ -56,6 +57,7 @@
         <a href="#fitur" class="hover:text-ink">Fitur</a>
         <a href="#plugin" class="hover:text-ink">Plugin Analitik</a>
         <a href="#how-it-works" class="hover:text-ink">Cara Kerja</a>
+        <a href="artikel.html" class="hover:text-ink">Artikel</a>
         <a href="#demo" class="hover:text-ink">Demo</a>
         <a href="#demo" class="inline-flex h-11 w-fit items-center justify-center rounded-lg bg-black px-6 text-white">Hubungi Kami</a>
       </div>
@@ -383,6 +385,33 @@
       </div>
     </section>
 
+    <!-- ===== ARTIKEL ===== -->
+    <section id="artikel" class="scroll-mt-24 bg-white py-20">
+      <div class="mx-auto flex max-w-[1240px] flex-col items-center gap-12 px-5 sm:px-8 lg:px-16">
+        <div class="flex max-w-[768px] flex-col items-center gap-3 text-center">
+          <span class="rounded-full bg-[#e5eeff] px-3.5 py-1 text-[11px] font-bold uppercase leading-[14px] tracking-[0.55px] text-brand">
+            Artikel &amp; Insight
+          </span>
+          <h2 class="pt-1 font-display text-3xl font-bold leading-[44px] tracking-[-0.02em] text-ink sm:text-[36px]">
+            Wawasan Terbaru Seputar KOL &amp; Campaign
+          </h2>
+          <p class="text-base leading-7 tracking-[-0.01em] text-body sm:text-lg">
+            Panduan, riset, dan praktik terbaik untuk mengelola kampanye KOL yang lebih terukur.
+          </p>
+        </div>
+
+        <div id="latest-articles" class="grid w-full grid-cols-1 gap-6 md:grid-cols-3"></div>
+
+        <a href="artikel.html" class="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 text-sm font-semibold text-ink shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] transition hover:border-brand hover:text-brand">
+          Lihat Semua Artikel
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <noscript>
+          <p class="text-center text-sm leading-6 text-body">Aktifkan JavaScript untuk melihat artikel terbaru.</p>
+        </noscript>
+      </div>
+    </section>
+
     <!-- ===== CTA BANNER ===== -->
     <section id="demo" class="scroll-mt-24 bg-white px-5 py-16 sm:px-8 lg:px-[84px]">
       <div class="relative mx-auto max-w-[1280px] overflow-hidden rounded-2xl bg-navy p-8 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] sm:p-16">
@@ -424,8 +453,7 @@
         <!-- Brand -->
         <div class="flex flex-col gap-4 sm:col-span-2">
           <div class="flex items-center gap-2">
-            <img src="assets/images/kolab-logo.png" alt="KOLAB.ID" class="h-8 w-[106.66px]" width="107" height="32">
-            <span class="font-display text-lg font-semibold leading-[26px] tracking-[-0.025em] text-ink">KOLAB<span class="text-accent">.ID</span></span>
+            <img src="assets/images/kolab-logo.png" alt="KOLAB.ID" class="h-10 w-[133.33px]" width="133" height="40">
           </div>
           <p class="max-w-[384px] text-sm leading-5 text-body">
             Sistem Orkestrasi &amp; Analitik Influencer Marketing Enterprise Pertama di Indonesia. Mentransformasi kampanye KOL berbasis intuisi menjadi keputusan berorientasi ROI presisi tinggi.
@@ -466,6 +494,7 @@
           <h3 class="text-xs font-semibold uppercase leading-4 tracking-[0.05em] text-ink">Perusahaan</h3>
           <nav class="flex flex-col gap-1" aria-label="Perusahaan">
             <a href="#" class="text-sm leading-5 text-body hover:text-ink">Kisah Sukses Klien</a>
+            <a href="artikel.html" class="text-sm leading-5 text-body hover:text-ink">Artikel &amp; Insight</a>
             <a href="#" class="text-sm leading-5 text-body hover:text-ink">Tolok Ukur Kreator Indonesia</a>
             <a href="#" class="text-sm leading-5 text-body hover:text-ink">Konsultasi Strategi</a>
             <a href="#" class="text-sm leading-5 text-body hover:text-ink">Portal Mitra Agensi</a>
@@ -487,5 +516,6 @@
   </footer>
 
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/articles.js" defer></script>
 </body>
 </html>

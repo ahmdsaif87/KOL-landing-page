@@ -7,6 +7,10 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+# URL artikel yang rapi: /artikel/ dan /artikel/{slug}
+RewriteRule ^artikel/?$ artikel.html [L,QSA]
+RewriteRule ^artikel/([^/]+)/?$ artikel.html?slug=$1 [L,QSA]
+
 # Blok file tersembunyi (.git, .env, dsb.)
 <FilesMatch "^\.">
     Require all denied

@@ -5,16 +5,14 @@ class Home extends MY_Controller
 {
     public function index()
     {
-        $this->load->library('artikel_api');
-
+        $latest = array();
         try {
+            $this->load->library('artikel_api');
             $latest = $this->artikel_api->latest(3);
+            $this->output->cache(10);
         } catch (Artikel_api_exception $e) {
-            $this->render_offline();
-            return;
+            $latest = array();
         }
-
-        $this->output->cache(10);
 
         $data = array(
             'active'           => 'home',

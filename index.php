@@ -26,9 +26,14 @@ define('ENVIRONMENT', $env);
  * ERROR REPORTING
  *---------------------------------------------------------------
  */
+// Normalisasi encoded space (%20) di REQUEST_URI agar CI3 dapat mengenali folder berspasi di Apache
+if (isset($_SERVER['REQUEST_URI'])) {
+    $_SERVER['REQUEST_URI'] = rawurldecode($_SERVER['REQUEST_URI']);
+}
+
 switch (ENVIRONMENT) {
     case 'development':
-        error_reporting(-1);
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
         ini_set('display_errors', 1);
         break;
 

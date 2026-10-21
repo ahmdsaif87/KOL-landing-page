@@ -13,7 +13,9 @@ if ($base_url !== false && $base_url !== '') {
     $config['base_url'] = rtrim($base_url, '/') . '/';
 } elseif (! empty($_SERVER['HTTP_HOST'])) {
     $scheme = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $config['base_url'] = $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
+    $script = isset($_SERVER['SCRIPT_NAME']) ? str_replace('\\', '/', $_SERVER['SCRIPT_NAME']) : '';
+    $dir = rtrim(dirname($script), '/\\');
+    $config['base_url'] = $scheme . '://' . $_SERVER['HTTP_HOST'] . ($dir !== '' ? $dir : '') . '/';
 } else {
     $config['base_url'] = 'http://localhost:8087/';
 }

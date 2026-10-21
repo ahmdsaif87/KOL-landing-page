@@ -1,18 +1,17 @@
 {
   "name": "kol-landing",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Landing page statis KOL System (Vanilla + Tailwind) — hasil build deploy ke public_html",
+  "description": "Landing page KOLAB.ID — CodeIgniter 3 + Tailwind CSS. Artikel dibaca langsung dari database KOL (read-only).",
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "css:watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "preview": "live-server --port=8087 --no-browser --ignore=node_modules",
+    "preview": "php -S 127.0.0.1:8087 dev-router.php",
     "dev": "concurrently -n css,preview -c blue,green \"npm:css:watch\" \"npm:preview\""
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",
     "tailwindcss": "^4.1.0",
-    "concurrently": "^9.1.0",
-    "live-server": "^1.2.2"
+    "concurrently": "^9.1.0"
   }
 }

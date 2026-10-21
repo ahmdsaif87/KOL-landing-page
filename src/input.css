@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 /* File yang di-scan untuk class Tailwind (jalankan build dari folder landing/) */
-@source "../index.html";
-@source "../artikel.html";
+@source "../application/views";
 @source "../assets/js/main.js";
-@source "../assets/js/articles.js";
 
 /*
  * Token dari design Figma "Landing Page KOL" (KOLAB.ID).

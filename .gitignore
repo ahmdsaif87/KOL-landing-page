@@ -2,3 +2,11 @@ node_modules/
 scratch_debug.js
 .DS_Store
 *.log
+
+# CI3 runtime
+application/cache/*
+!application/cache/index.html
+!application/cache/.htaccess
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess

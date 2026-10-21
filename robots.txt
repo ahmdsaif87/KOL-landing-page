@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /application/
+Disallow: /system/
+Disallow: /database/
 Disallow: /campaigns/
 Disallow: /datahub/
+
+Sitemap: https://kolab.id/sitemap.xml

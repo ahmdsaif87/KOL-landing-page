@@ -1,78 +1,130 @@
-# KOL System — Landing Page
+# KOLAB.ID — Landing Page (CodeIgniter 3)
 
-Landing page statis (Vanilla + Tailwind v4). Folder ini **tidak jalan di server** —
-isi hasil deploy-nya yang di-copy ke `public_html/`.
+Landing page + blog KOLAB.ID. Server-side rendered (SSR) dengan CodeIgniter 3, mengonsumsi
+data artikel secara terpusat melalui REST API Campaign (`/articles/feed`)
+(**read-only** — landing tidak memiliki akses langsung ke database).
+
+## Stack
+
+| Bagian | Teknologi |
+| --- | --- |
+| Backend | CodeIgniter 3.1.8, PHP 7.2+ |
+| Data Source | Campaign REST API (`LANDING_API_BASE`) |
+| CSS | Tailwind CSS v4 (build lokal, hasil di `dist/output.css`) |
+| JS | `assets/js/main.js` (navigasi responsif mobile) |
+| Web server | Apache / LiteSpeed (butuh `mod_rewrite`) |
+
+Tidak ada Node/Python di server produksi. Tailwind hanya dipakai saat build aset statis.
 
 ## Struktur
 
 ```
 landing/
-├── index.html          # halaman utama
-├── artikel.html        # listing + detail artikel
-├── src/input.css       # sumber Tailwind (edit di sini, jangan edit dist/)
-├── dist/output.css     # hasil build (generated — jangan edit tangan)
-├── assets/
-│   ├── js/main.js      # navbar toggle + scroll
-│   ├── js/articles.js  # fetch & render artikel dari API KOL System
-│   └── images/         # logo, gambar
-├── robots.txt          # ikut ter-deploy
-├── .htaccess           # ikut ter-deploy (HTTPS redirect, blok dotfile, URL artikel)
-└── package.json        # hanya untuk build lokal — TIDAK di-upload
+├── index.php                 # front controller CI3
+├── .htaccess                 # rewrite + proteksi folder
+├── application/
+│   ├── config/               # config, api, routes, autoload
+│   ├── controllers/          # Home, Artikel, Login
+│   ├── core/                 # MY_Controller (reusable offline 503 handler)
+│   ├── libraries/            # Artikel_api (cURL client API)
+│   ├── views/
+│   │   ├── layout/           # header.php, footer.php
+│   │   ├── home/index.php
+│   │   ├── artikel/          # index.php (list), detail.php
+│   │   ├── login/index.php
+│   │   ├── partials/article_card.php
+│   │   └── errors/           # offline.php (503), html/
+│   ├── cache/                # output cache (harus writable)
+│   └── logs/                 # log CI (harus writable)
+├── assets/                   # gambar, ikon, main.js
+├── dist/output.css           # hasil build Tailwind
+├── src/input.css             # sumber Tailwind
+├── system/                   # framework CI3
+├── dev-router.php            # hanya untuk php -S (dev)
+├── robots.txt
+└── package.json
 ```
 
-## Perintah
+## Route
 
-```bash
-npm install        # sekali saja (butuh Node ≥ 18)
-npm run dev        # watch Tailwind + preview server di http://localhost:8087 (auto-reload)
-npm run css:watch  # watch Tailwind saja (tanpa server)
-npm run preview    # server statis saja di http://localhost:8087
-npm run build      # build production → dist/output.css (minified)
-```
+| URL | Controller | Keterangan |
+| --- | --- | --- |
+| `/` | `Home::index` | 3 artikel terbaru |
+| `/artikel` | `Artikel::index` | list + filter kategori + pagination |
+| `/artikel?category=Riset&page=2` | `Artikel::index` | list terfilter |
+| `/artikel/{slug}` | `Artikel::detail` | detail artikel + related + counter views |
+| `/login` | `Login::index` | pilihan portal aplikasi |
+| `/sitemap.xml` | `Home::sitemap` | sitemap XML dinamis |
 
-> Port preview (8087) hanya untuk lokal. Tidak ada hubungannya dengan deploy —
-> `package.json` dan `node_modules/` tidak ikut di-upload ke `public_html/`.
+## Setup Lokal
 
-## Deploy → public_html
+1. **Pastikan API Campaign berjalan**
 
-Copy **hanya** ini ke `public_html/` di server:
+   Secara default, feed artikel diambil dari `http://localhost:8000` atau sub domain nanti setelah di hosting. Pastikan service Campaign berjalan pada port tersebut:
+   - Endpoint listing: `GET http://localhost:8000/articles/feed`
+   - Endpoint detail: `GET http://localhost:8000/articles/feed/{slug}`
 
-| Dari (lokal)         | Ke (server)          |
-|----------------------|----------------------|
-| `index.html`         | `public_html/index.html` |
-| `artikel.html`       | `public_html/artikel.html` |
-| `dist/`              | `public_html/dist/`      |
-| `assets/`            | `public_html/assets/`    |
-| `robots.txt`         | `public_html/robots.txt` |
-| `.htaccess`          | `public_html/.htaccess`  |
+2. **Konfigurasi environment** (opsional; default menyesuaikan localhost)
 
-**Jangan di-upload:** `node_modules/`, `package.json`, `package-lock.json`, `src/` (opsional — boleh ikut sebagai referensi, tapi tidak dibutuhkan runtime).
+   ```bash
+   export LANDING_API_BASE=http://localhost:8000
+   export LANDING_BASE_URL=http://localhost:8087/
+   export LANDING_CDN_URL=https://cdn.domain.com
+   export LANDING_CAMPAIGN_URL=https://app.domain.com
+   export LANDING_DATAHUB_URL=https://datahub.domain.com
+   ```
 
-Catatan: symlink `public_html/campaigns` dan `public_html/datahub` dibuat di server via terminal, bukan dari folder ini.
+   `base_url` otomatis mengikuti `HTTP_HOST` bila `LANDING_BASE_URL` kosong.
 
-## Artikel
+3. **Jalankan development server**
 
-Artikel dikelola di KOL System (`/campaigns/administrator/articles`) dan dibaca
-langsung oleh landing page melalui API publik:
+   ```bash
+   php -S 127.0.0.1:8087 dev-router.php
+   ```
 
-- `GET /campaigns/articles/feed?limit=6&page=1&category=Insight&q=keyword`
-- `GET /campaigns/articles/feed/{slug}`
+   `dev-router.php` hanya untuk server bawaan PHP. Produksi memakai Apache/LiteSpeed + `.htaccess`.
 
-Hanya artikel berstatus **PUBLISHED** dengan `published_at` yang sudah lewat
-yang ditampilkan. URL artikel di landing page: `/artikel/{slug}` (di-rewrite oleh
-`.htaccess` ke `artikel.html?slug={slug}`).
+4. **Build CSS** (hanya jika mengubah tampilan/class Tailwind)
 
-Base API diatur lewat atribut `data-api-base` pada `<html>` di `index.html` dan
-`artikel.html`. Default produksi: `/campaigns`. Untuk uji lokal dengan server
-statis (`npm run preview`), set override sebelum `articles.js` dimuat (sesuaikan
-dengan URL instalasi KOL System di lokal):
+   ```bash
+   npm install
+   npm run build
+   ```
 
-```html
-<script>window.KOL_ARTICLES_API_BASE = 'http://localhost/kol-system';</script>
-```
+## Deploy ke cPanel / Hosting
 
-## Catatan desain
+Aplikasi ini siap di-upload langsung ke `public_html/` (atau document root subdomain).
 
-Starter ini memakai font sistem + token warna placeholder di `src/input.css`
-(`@theme`). Font, palet, dan komposisi sebenarnya ditentukan saat ronde arah
-desain — lihat `PRODUCT.md` / `DESIGN.md` kalau sudah ada.
+1. Upload seluruh isi folder `landing/` ke docroot. Folder `node_modules/` dan `src/` tidak perlu di-upload.
+2. Set document root domain ke folder tersebut (bukan ke `application/`).
+3. Pastikan `.htaccess` ikut ter-upload.
+4. Permission folder runtime:
+
+   ```bash
+   chmod 775 application/cache application/logs
+   ```
+
+5. Set environment di `.htaccess` atau host server:
+
+   ```apache
+   SetEnv CI_ENV production
+   SetEnv LANDING_BASE_URL https://domain.com/
+   SetEnv LANDING_API_BASE https://app.domain.com
+   SetEnv LANDING_CAMPAIGN_URL https://app.domain.com
+   SetEnv LANDING_DATAHUB_URL https://datahub.domain.com
+   ```
+
+6. Ganti `Sitemap:` di `robots.txt` sesuai domain produksi.
+
+## Cache & Ketahanan Offline (Resilience)
+
+- Home, list, dan detail artikel menggunakan output cache selama 10 menit; sitemap 60 menit.
+- Cache disimpan di `application/cache/` dan otomatis membedakan query string (`?category=`, `?page=`).
+- **Resilience**: Jika API Campaign mengalami gangguan atau offline, aplikasi merespons dengan HTTP status **503 (Service Unavailable)** beserta tampilan ramah pengguna, dan **tidak mencache** respons error tersebut.
+- Hapus isi `application/cache/` saat ingin membersihkan cache secara instan.
+
+## Catatan Keamanan
+
+- Landing **tidak memiliki koneksi database**, sehingga tidak ada risiko kebocoran kredensial DB pada aplikasi landing.
+- Request ke API dibatasi timeout cURL yang pendek (connect: 2s, total: 5s) agar proses SSR tidak menggantung saat service luar lambat.
+- `application/`, `system/`, dan berkas konfigurasi dilindungi `.htaccess`.

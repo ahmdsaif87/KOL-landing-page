@@ -17,9 +17,64 @@
           campaign, approval, dan performa dalam satu ekosistem yang terintegrasi.
         </p>
 
-        <div class="mt-14 w-full max-w-[1020px] overflow-hidden rounded-xl">
-          <img src="<?= base_url('assets/images/hero-mockup.png') ?>" alt="Tampilan dashboard campaign KOLAB.ID"
-               class="block h-auto w-full" width="1440" height="818">
+        <!-- Mockup Carousel Container -->
+        <div class="group relative mt-12 w-full max-w-[1020px]" id="hero-slider-container" aria-roledescription="carousel" aria-label="Tampilan Antarmuka KOLAB.ID">
+          <!-- Mockup wrapper with permanent elegant shadow (borderless, no hover shift) -->
+          <div class="relative overflow-hidden rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)]">
+            <!-- Slider Track -->
+            <div id="hero-slider-track" class="flex transition-transform duration-500 ease-out will-change-transform">
+              <!-- Slide 1 -->
+              <div class="w-full flex-shrink-0" role="group" aria-roledescription="slide" aria-label="1 dari 4: Dashboard Utama">
+                <img src="<?= base_url('assets/images/hero-mockup.png') ?>"
+                     alt="Tampilan dashboard campaign KOLAB.ID"
+                     class="block h-auto w-full select-none"
+                     width="1440" height="818">
+              </div>
+              <!-- Slide 2 -->
+              <div class="w-full flex-shrink-0" role="group" aria-roledescription="slide" aria-label="2 dari 4: Manajemen Campaign & KOL">
+                <img src="<?= base_url('assets/images/hero-mockup-2.png') ?>"
+                     alt="Manajemen Campaign & KOL KOLAB.ID"
+                     class="block h-auto w-full select-none"
+                     width="1440" height="818" loading="lazy">
+              </div>
+              <!-- Slide 3 -->
+              <div class="w-full flex-shrink-0" role="group" aria-roledescription="slide" aria-label="3 dari 4: Monitoring Performa Campaign">
+                <img src="<?= base_url('assets/images/hero-mockup-3.png') ?>"
+                     alt="Monitoring Performa Campaign KOLAB.ID"
+                     class="block h-auto w-full select-none"
+                     width="1440" height="818" loading="lazy">
+              </div>
+              <!-- Slide 4 -->
+              <div class="w-full flex-shrink-0" role="group" aria-roledescription="slide" aria-label="4 dari 4: Laporan & Analytics KOL">
+                <img src="<?= base_url('assets/images/hero-mockup-4.png') ?>"
+                     alt="Laporan & Analytics KOL KOLAB.ID"
+                     class="block h-auto w-full select-none"
+                     width="1440" height="818" loading="lazy">
+              </div>
+            </div>
+
+            <!-- Navigation Arrows (Floating) -->
+            <button type="button" id="hero-slider-prev" aria-label="Slide sebelumnya"
+                    class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/90 text-ink shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none z-10 cursor-pointer">
+              <svg class="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <button type="button" id="hero-slider-next" aria-label="Slide berikutnya"
+                    class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/90 text-ink shadow-md backdrop-blur-md transition-all duration-200 hover:bg-white hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none z-10 cursor-pointer">
+              <svg class="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Pagination Indicator Dots -->
+          <div class="mt-5 flex items-center justify-center gap-2" id="hero-slider-dots">
+            <button type="button" data-index="0" aria-label="Lihat slide 1" class="hero-dot h-2 w-7 rounded-full bg-brand transition-all duration-300 cursor-pointer"></button>
+            <button type="button" data-index="1" aria-label="Lihat slide 2" class="hero-dot h-2 w-2 rounded-full bg-slate-300 hover:bg-slate-400 transition-all duration-300 cursor-pointer"></button>
+            <button type="button" data-index="2" aria-label="Lihat slide 3" class="hero-dot h-2 w-2 rounded-full bg-slate-300 hover:bg-slate-400 transition-all duration-300 cursor-pointer"></button>
+            <button type="button" data-index="3" aria-label="Lihat slide 4" class="hero-dot h-2 w-2 rounded-full bg-slate-300 hover:bg-slate-400 transition-all duration-300 cursor-pointer"></button>
+          </div>
         </div>
 
         <div class="mt-10">

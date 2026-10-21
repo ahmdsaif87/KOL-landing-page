@@ -63,4 +63,111 @@
   // Tahun berjalan di footer
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
+
+  // ===== HERO MOCKUP SLIDER =====
+  const heroSlider = document.getElementById('hero-slider-container');
+  if (heroSlider) {
+    const track = document.getElementById('hero-slider-track');
+    const prevBtn = document.getElementById('hero-slider-prev');
+    const nextBtn = document.getElementById('hero-slider-next');
+    const dots = heroSlider.querySelectorAll('.hero-dot');
+    const slidesCount = dots.length || 4;
+    let currentIndex = 0;
+    let autoplayTimer = null;
+
+    const updateSlider = (index) => {
+      currentIndex = (index + slidesCount) % slidesCount;
+      if (track) {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+      dots.forEach((dot, i) => {
+        if (i === currentIndex) {
+          dot.classList.remove('w-2', 'bg-slate-300', 'hover:bg-slate-400');
+          dot.classList.add('w-7', 'bg-brand');
+          dot.setAttribute('aria-current', 'true');
+        } else {
+          dot.classList.remove('w-7', 'bg-brand');
+          dot.classList.add('w-2', 'bg-slate-300', 'hover:bg-slate-400');
+          dot.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    const nextSlide = () => updateSlider(currentIndex + 1);
+    const prevSlide = () => updateSlider(currentIndex - 1);
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      autoplayTimer = setInterval(nextSlide, 4500);
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    prevBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+      startAutoplay();
+    });
+
+    nextBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+      startAutoplay();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        updateSlider(index);
+        startAutoplay();
+      });
+    });
+
+    // Pause on hover
+    heroSlider.addEventListener('mouseenter', stopAutoplay);
+    heroSlider.addEventListener('mouseleave', startAutoplay);
+
+    // Keyboard navigation
+    heroSlider.setAttribute('tabindex', '0');
+    heroSlider.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+        startAutoplay();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextSlide();
+        startAutoplay();
+      }
+    });
+
+    // Touch Swipe Support (Mobile)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    heroSlider.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      stopAutoplay();
+    }, { passive: true });
+
+    heroSlider.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diffX = touchEndX - touchStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX > 0) {
+          prevSlide();
+        } else {
+          nextSlide();
+        }
+      }
+      startAutoplay();
+    }, { passive: true });
+
+    // Mulai autoplay
+    startAutoplay();
+  }
 })();

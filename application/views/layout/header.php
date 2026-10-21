@@ -19,7 +19,10 @@ $canonical       = isset($canonical) ? $canonical : current_url();
   <meta property="og:image" content="<?= html_escape($og_image) ?>">
   <meta property="og:url" content="<?= html_escape($canonical) ?>">
   <link rel="canonical" href="<?= html_escape($canonical) ?>">
-  <link rel="icon" href="<?= base_url('assets/images/kolab-logo.png') ?>" type="image/png">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/images/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="64x64" href="<?= base_url('assets/images/favicon.png') ?>">
+  <link rel="shortcut icon" href="<?= base_url('assets/images/favicon.ico') ?>">
+  <link rel="apple-touch-icon" href="<?= base_url('assets/images/favicon.png') ?>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">

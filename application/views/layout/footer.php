@@ -12,11 +12,6 @@
           <p class="max-w-[384px] text-sm leading-5 text-body">
             Sistem Orkestrasi &amp; Analitik Influencer Marketing Enterprise yang ada di Indonesia. Mentransformasi kampanye KOL berbasis intuisi menjadi keputusan berorientasi ROI presisi tinggi.
           </p>
-          <div class="flex flex-wrap items-center gap-2 pt-1">
-            <span class="whitespace-nowrap rounded-full bg-mist px-2 py-1 text-[11px] font-semibold leading-[14px] tracking-[0.44px] text-accent">Sertifikasi ISO 27001</span>
-            <span class="whitespace-nowrap rounded-full bg-[rgba(0,125,87,0.1)] px-2 py-1 text-[11px] font-semibold leading-[14px] tracking-[0.44px] text-green">SOC2 Type II Ready</span>
-            <span class="whitespace-nowrap rounded-full bg-[#dae2fd] px-2 py-1 text-[11px] font-semibold leading-[14px] tracking-[0.44px] text-[#5c647a]">Terdaftar PSE Kominfo</span>
-          </div>
         </div>
 
         <!-- Kolom Produk & Platform -->

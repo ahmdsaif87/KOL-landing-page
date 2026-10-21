@@ -9,7 +9,9 @@ class Home extends MY_Controller
         try {
             $this->load->library('artikel_api');
             $latest = $this->artikel_api->latest(3);
-            $this->output->cache(10);
+            if (ENVIRONMENT === 'production') {
+                $this->output->cache(10);
+            }
         } catch (Artikel_api_exception $e) {
             $latest = array();
         }
@@ -44,7 +46,9 @@ class Home extends MY_Controller
             return;
         }
 
-        $this->output->cache(60);
+        if (ENVIRONMENT === 'production') {
+            $this->output->cache(60);
+        }
 
         $urls = array(
             array('loc' => base_url('/'), 'lastmod' => date('c'), 'priority' => '1.0'),

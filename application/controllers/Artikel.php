@@ -35,7 +35,9 @@ class Artikel extends MY_Controller
             redirect($redirect_url);
         }
 
-        $this->output->cache(10);
+        if (ENVIRONMENT === 'production') {
+            $this->output->cache(10);
+        }
 
         $title = 'Artikel & Insight — KOLAB.ID';
         if ($category !== '' && $search !== '') {
@@ -110,7 +112,9 @@ class Artikel extends MY_Controller
         $tags          = isset($artikel->tags) && is_array($artikel->tags) ? $artikel->tags : array();
         $published_iso = ! empty($artikel->published_at) ? date('c', strtotime($artikel->published_at)) : date('c');
 
-        $this->output->cache(10);
+        if (ENVIRONMENT === 'production') {
+            $this->output->cache(10);
+        }
 
         $data = array(
             'active'           => 'artikel',

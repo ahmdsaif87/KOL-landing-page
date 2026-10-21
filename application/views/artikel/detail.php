@@ -12,8 +12,10 @@
           <div class="mx-auto max-w-3xl">
             <div class="flex flex-wrap items-center gap-2">
               <?php if (! empty($artikel->category)): ?>
-                <a href="<?= base_url('artikel?category=' . rawurlencode($artikel->category)) ?>"
-                   class="rounded-full bg-[#e5eeff] px-3.5 py-1 text-[11px] font-bold uppercase leading-[14px] tracking-[0.55px] text-brand hover:bg-[#dbe1ff]"><?= html_escape($artikel->category) ?></a>
+                <?php foreach (array_filter(array_map('trim', explode(',', $artikel->category))) as $cat): ?>
+                  <a href="<?= base_url('artikel?category=' . rawurlencode($cat)) ?>"
+                     class="rounded-full bg-[#e5eeff] px-3.5 py-1 text-[11px] font-bold uppercase leading-[14px] tracking-[0.55px] text-brand hover:bg-[#dbe1ff]"><?= html_escape($cat) ?></a>
+                <?php endforeach; ?>
               <?php endif; ?>
             </div>
 
@@ -23,8 +25,6 @@
               <span class="font-semibold text-body"><?= html_escape(! empty($artikel->author) ? $artikel->author : 'Admin') ?></span>
               <span aria-hidden="true">&middot;</span>
               <time datetime="<?= html_escape(! empty($artikel->published_at) ? $artikel->published_at : '') ?>"><?= html_escape($date_label) ?></time>
-              <span aria-hidden="true">&middot;</span>
-              <span><?= (int) $reading_time ?> menit baca</span>
             </div>
 
             <?php if ($cover): ?>

@@ -116,15 +116,16 @@ class Artikel_api
     }
 
     /**
-     * Ambil artikel terpaginasi dengan filter kategori opsional.
+     * Ambil artikel terpaginasi dengan filter kategori dan search opsional.
      *
      * @param int $limit
      * @param int $page
      * @param string $category
+     * @param string $search
      * @return object
      * @throws Artikel_api_exception
      */
-    public function paginate($limit, $page, $category = '')
+    public function paginate($limit, $page, $category = '', $search = '')
     {
         $query = array(
             'limit' => max(1, (int) $limit),
@@ -133,6 +134,10 @@ class Artikel_api
 
         if ($category !== '') {
             $query['category'] = $category;
+        }
+
+        if ($search !== '') {
+            $query['q'] = $search;
         }
 
         $res = $this->request('articles/feed', $query);

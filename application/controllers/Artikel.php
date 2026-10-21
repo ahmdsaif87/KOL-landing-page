@@ -8,12 +8,13 @@ class Artikel extends MY_Controller
         $this->load->library('artikel_api');
 
         $category = trim((string) $this->input->get('category'));
+        $search   = trim((string) $this->input->get('q'));
         $page     = (int) $this->input->get('page');
         $page     = $page > 0 ? $page : 1;
         $per_page = 9;
 
         try {
-            $result = $this->artikel_api->paginate($per_page, $page, $category);
+            $result = $this->artikel_api->paginate($per_page, $page, $category, $search);
         } catch (Artikel_api_exception $e) {
             $this->render_offline();
             return;
@@ -23,18 +24,41 @@ class Artikel extends MY_Controller
         $pages = max(1, (int) $result->meta->total_pages);
 
         if ($page > $pages && $total > 0) {
-            redirect($category !== '' ? 'artikel?category=' . rawurlencode($category) : 'artikel');
+            $redirect_params = array();
+            if ($category !== '') {
+                $redirect_params['category'] = $category;
+            }
+            if ($search !== '') {
+                $redirect_params['q'] = $search;
+            }
+            $redirect_url = ! empty($redirect_params) ? 'artikel?' . http_build_query($redirect_params) : 'artikel';
+            redirect($redirect_url);
         }
 
         $this->output->cache(10);
 
         $title = 'Artikel & Insight — KOLAB.ID';
-        if ($category !== '') {
+        if ($category !== '' && $search !== '') {
+            $title = 'Pencarian "' . $search . '" di ' . $category . ' — KOLAB.ID';
+        } elseif ($search !== '') {
+            $title = 'Pencarian "' . $search . '" — KOLAB.ID';
+        } elseif ($category !== '') {
             $title = 'Artikel ' . $category . ' — KOLAB.ID';
         }
         if ($page > 1) {
             $title .= ' (Halaman ' . $page . ')';
         }
+
+        $canonical_params = array();
+        if ($category !== '') {
+            $canonical_params['category'] = $category;
+        }
+        if ($search !== '') {
+            $canonical_params['q'] = $search;
+        }
+        $canonical = ! empty($canonical_params)
+            ? base_url('artikel?' . http_build_query($canonical_params))
+            : base_url('artikel');
 
         $data = array(
             'active'           => 'artikel',
@@ -42,12 +66,11 @@ class Artikel extends MY_Controller
             'meta_description' => 'Panduan, riset, dan praktik terbaik seputar influencer marketing, KOL, dan kampanye digital dari KOLAB.ID.',
             'og_type'          => 'website',
             'og_image'         => base_url('assets/images/hero-mockup.png'),
-            'canonical'        => $category !== ''
-                ? base_url('artikel?category=' . rawurlencode($category))
-                : base_url('artikel'),
+            'canonical'        => $canonical,
             'artikel'          => $result->data,
             'categories'       => isset($result->meta->categories) ? $result->meta->categories : array(),
             'active_category'  => $category,
+            'search'           => $search,
             'page'             => $page,
             'total_pages'      => $pages,
             'total'            => $total,

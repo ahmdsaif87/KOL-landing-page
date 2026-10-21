@@ -30,14 +30,42 @@
     <!-- ===== ARTIKEL CONTENT ===== -->
     <section id="articles-content" class="bg-mist py-20">
       <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
-        <div class="flex flex-col items-center gap-3">
+        <div class="flex flex-col items-center gap-4">
           <span class="text-[11px] font-bold uppercase leading-[14px] tracking-[0.55px] text-[#737686]">Jelajahi Topik</span>
-          <div id="article-categories" class="flex flex-wrap justify-center gap-2">
-            <a href="<?= base_url('artikel') ?>"
+
+          <!-- Form Pencarian -->
+          <form id="article-search-form" action="<?= base_url('artikel') ?>" method="get" class="relative w-full max-w-[460px]">
+            <?php if ($active_category !== ''): ?>
+              <input type="hidden" name="category" value="<?= html_escape($active_category) ?>">
+            <?php endif; ?>
+            <div class="relative flex items-center">
+              <input type="text" id="article-search-input" name="q" value="<?= html_escape(! empty($search) ? $search : '') ?>"
+                     placeholder="Cari artikel berdasarkan judul atau kategori..."
+                     autocomplete="off"
+                     class="h-12 w-full rounded-full border border-slate-200 bg-white pl-5 pr-11 text-sm text-ink placeholder:text-[#94a3b8] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.04)] transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20">
+              <button type="button" id="article-search-clear"
+                      class="absolute inset-y-0 right-0 my-auto mr-3 flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 <?= empty($search) ? 'hidden' : '' ?>"
+                      title="Hapus pencarian" aria-label="Hapus pencarian">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <div id="article-categories" class="flex flex-wrap justify-center gap-2 pt-1">
+            <?php
+              $all_url = ! empty($search) ? base_url('artikel?q=' . rawurlencode($search)) : base_url('artikel');
+            ?>
+            <a href="<?= $all_url ?>"
                class="<?= $active_category === '' ? 'rounded-full bg-brand px-4 py-2 text-xs font-semibold text-white shadow-[0px_10px_15px_-3px_rgba(37,99,235,0.2),0px_4px_6px_-4px_rgba(37,99,235,0.2)]' : 'rounded-full bg-white px-4 py-2 text-xs font-semibold text-body shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] ring-1 ring-slate-200 transition hover:text-brand hover:ring-brand/30' ?>"
                <?= $active_category === '' ? 'aria-current="page"' : '' ?>>Semua</a>
             <?php foreach ($categories as $category): ?>
-              <a href="<?= base_url('artikel?category=' . rawurlencode($category)) ?>"
+              <?php
+                $cat_url = base_url('artikel?category=' . rawurlencode($category) . (! empty($search) ? '&q=' . rawurlencode($search) : ''));
+              ?>
+              <a href="<?= $cat_url ?>"
                  class="<?= $active_category === $category ? 'rounded-full bg-brand px-4 py-2 text-xs font-semibold text-white shadow-[0px_10px_15px_-3px_rgba(37,99,235,0.2),0px_4px_6px_-4px_rgba(37,99,235,0.2)]' : 'rounded-full bg-white px-4 py-2 text-xs font-semibold text-body shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] ring-1 ring-slate-200 transition hover:text-brand hover:ring-brand/30' ?>"
                  <?= $active_category === $category ? 'aria-current="page"' : '' ?>><?= html_escape($category) ?></a>
             <?php endforeach; ?>
@@ -58,15 +86,28 @@
               </div>
               <h3 class="mt-5 font-display text-xl font-bold leading-7 tracking-[-0.01em] text-ink">Belum ada artikel</h3>
               <p class="mx-auto mt-2 max-w-[420px] text-sm leading-[22.75px] text-body">
-                <?= $active_category !== '' ? 'Belum ada artikel pada kategori ini. Coba pilih topik lain.' : 'Artikel baru akan segera hadir. Silakan kembali lagi nanti.' ?>
+                <?= ! empty($search)
+                    ? 'Tidak ditemukan artikel yang sesuai dengan pencarian "' . html_escape($search) . '". Coba cari dengan kata kunci lain.'
+                    : ($active_category !== '' ? 'Belum ada artikel pada kategori ini. Coba pilih topik lain.' : 'Artikel baru akan segera hadir. Silakan kembali lagi nanti.') ?>
               </p>
+              <?php if (! empty($search) || $active_category !== ''): ?>
+                <a href="<?= base_url('artikel') ?>" class="mt-5 inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-xs font-semibold text-white shadow transition hover:bg-blue-700">Lihat Semua Artikel</a>
+              <?php endif; ?>
             </div>
           </div>
         <?php endif; ?>
 
         <?php if ($total_pages > 1): ?>
           <?php
-            $query_base = $active_category !== '' ? '?category=' . rawurlencode($active_category) . '&amp;page=' : '?page=';
+            $query_params = array();
+            if ($active_category !== '') {
+                $query_params['category'] = $active_category;
+            }
+            if (! empty($search)) {
+                $query_params['q'] = $search;
+            }
+            $query_params['page'] = '';
+            $query_base = '?' . http_build_query($query_params);
             $prev_url   = base_url('artikel' . $query_base . max(1, $page - 1));
             $next_url   = base_url('artikel' . $query_base . min($total_pages, $page + 1));
           ?>
@@ -120,3 +161,38 @@
         </div>
       </div>
     </section>
+
+    <script>
+      (function() {
+        var searchInput = document.getElementById('article-search-input');
+        var clearBtn = document.getElementById('article-search-clear');
+        var hadInitialValue = <?= !empty($search) ? 'true' : 'false' ?>;
+
+        if (!searchInput || !clearBtn) return;
+
+        function toggleClearBtn() {
+          if (searchInput.value.trim().length > 0) {
+            clearBtn.classList.remove('hidden');
+          } else {
+            clearBtn.classList.add('hidden');
+          }
+        }
+
+        searchInput.addEventListener('input', toggleClearBtn);
+        searchInput.addEventListener('change', toggleClearBtn);
+
+        clearBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          searchInput.value = '';
+          toggleClearBtn();
+
+          if (hadInitialValue) {
+            var category = "<?= html_escape($active_category) ?>";
+            var redirectUrl = "<?= base_url('artikel') ?>" + (category ? "?category=" + encodeURIComponent(category) : "");
+            window.location.href = redirectUrl;
+          } else {
+            searchInput.focus();
+          }
+        });
+      })();
+    </script>

@@ -170,4 +170,54 @@
     // Mulai autoplay
     startAutoplay();
   }
+
+  // ===== FAQ ACCORDION =====
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach((item) => {
+    const toggle = item.querySelector('.faq-toggle');
+    const content = item.querySelector('.faq-content');
+    const icon = item.querySelector('.faq-icon');
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+
+      // Tutup FAQ item lain agar rapi
+      faqItems.forEach((other) => {
+        if (other !== item && other.classList.contains('is-open')) {
+          other.classList.remove('is-open');
+          const otherContent = other.querySelector('.faq-content');
+          const otherToggle = other.querySelector('.faq-toggle');
+          const otherIcon = other.querySelector('.faq-icon');
+          if (otherContent) {
+            otherContent.style.maxHeight = '0px';
+            otherContent.classList.remove('opacity-100');
+            otherContent.classList.add('opacity-0');
+          }
+          otherToggle?.setAttribute('aria-expanded', 'false');
+          otherIcon?.classList.remove('rotate-45');
+        }
+      });
+
+      if (isOpen) {
+        item.classList.remove('is-open');
+        if (content) {
+          content.style.maxHeight = '0px';
+          content.classList.remove('opacity-100');
+          content.classList.add('opacity-0');
+        }
+        toggle.setAttribute('aria-expanded', 'false');
+        icon?.classList.remove('rotate-45');
+      } else {
+        item.classList.add('is-open');
+        if (content) {
+          content.style.maxHeight = (content.scrollHeight + 32) + 'px';
+          content.classList.remove('opacity-0');
+          content.classList.add('opacity-100');
+        }
+        toggle.setAttribute('aria-expanded', 'true');
+        icon?.classList.add('rotate-45');
+      }
+    });
+  });
 })();
+

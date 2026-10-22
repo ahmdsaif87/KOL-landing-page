@@ -44,6 +44,7 @@
           <nav class="flex flex-col gap-1" aria-label="Perusahaan">
             <a href="<?= base_url('/#demo') ?>" class="text-sm leading-5 text-body hover:text-ink">Kisah Sukses Klien</a>
             <a href="<?= base_url('artikel') ?>" class="text-sm leading-5 text-body hover:text-ink">Artikel &amp; Insight</a>
+            <a href="<?= base_url('/#faq') ?>" class="text-sm leading-5 text-body hover:text-ink">FAQ</a>
             <a href="<?= base_url('/#demo') ?>" class="text-sm leading-5 text-body hover:text-ink">Tolok Ukur Kreator Indonesia</a>
             <a href="<?= base_url('/#demo') ?>" class="text-sm leading-5 text-body hover:text-ink">Konsultasi Strategi</a>
             <a href="<?= base_url('/#demo') ?>" class="text-sm leading-5 text-body hover:text-ink">Portal Mitra Agensi</a>

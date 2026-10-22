@@ -50,6 +50,7 @@ $canonical       = isset($canonical) ? $canonical : current_url();
         <a href="<?= base_url('/#plugin') ?>" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Plugin Analitik</a>
         <a href="<?= base_url('/#how-it-works') ?>" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Cara Kerja</a>
         <a href="<?= base_url('artikel') ?>" class="text-sm tracking-[0.14px] <?= $active === 'artikel' ? 'font-semibold text-brand' : 'font-medium text-body hover:text-ink' ?>"<?= $active === 'artikel' ? ' aria-current="page"' : '' ?>>Artikel</a>
+        <a href="<?= base_url('/#faq') ?>" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">FAQ</a>
         <a href="<?= base_url('/#demo') ?>" class="text-sm font-medium tracking-[0.14px] text-body hover:text-ink">Demo</a>
       </nav>
 
@@ -74,6 +75,7 @@ $canonical       = isset($canonical) ? $canonical : current_url();
         <a href="<?= base_url('/#plugin') ?>" class="hover:text-ink">Plugin Analitik</a>
         <a href="<?= base_url('/#how-it-works') ?>" class="hover:text-ink">Cara Kerja</a>
         <a href="<?= base_url('artikel') ?>" class="<?= $active === 'artikel' ? 'font-semibold text-brand' : 'hover:text-ink' ?>"<?= $active === 'artikel' ? ' aria-current="page"' : '' ?>>Artikel</a>
+        <a href="<?= base_url('/#faq') ?>" class="hover:text-ink">FAQ</a>
         <a href="<?= base_url('/#demo') ?>" class="hover:text-ink">Demo</a>
         <a href="<?= base_url('/#demo') ?>" class="inline-flex h-11 w-fit items-center justify-center rounded-lg bg-black px-6 text-white">Hubungi Kami</a>
       </div>
